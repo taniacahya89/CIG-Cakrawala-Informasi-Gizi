@@ -1,0 +1,380 @@
+[
+  {
+    "title": "Seberapa Paham Kamu tentang Gizi?",
+    "description": "pengetahuan dasar gizi seimbang, zat gizi, dan Isi Piringku.",
+    "questions": [
+      {
+        "question": "Menurut panduan Isi Piringku, berapa bagian piring yang dianjurkan untuk sayur dan buah secara keseluruhan?",
+        "options": {
+          "A": "Seperempat piring",
+          "B": "Setengah piring",
+          "C": "Tiga perempat piring",
+          "D": "Seluruh bagian piring"
+        },
+        "correct": "B",
+        "explanation": "Isi Piringku menganjurkan sekitar setengah piring diisi sayur dan buah, dengan porsi sayur lebih banyak daripada buah.",
+        "sort_order": 1
+      },
+      {
+        "question": "Zat gizi apa yang menjadi sumber energi utama bagi tubuh?",
+        "options": {
+          "A": "Vitamin",
+          "B": "Mineral",
+          "C": "Karbohidrat",
+          "D": "Air"
+        },
+        "correct": "C",
+        "explanation": "Karbohidrat merupakan sumber energi utama yang banyak ditemukan dalam nasi, jagung, kentang, dan umbi-umbian.",
+        "sort_order": 2
+      },
+      {
+        "question": "Apa fungsi utama protein dalam tubuh?",
+        "options": {
+          "A": "Memberikan rasa manis pada makanan",
+          "B": "Menggantikan kebutuhan air",
+          "C": "Membangun dan memperbaiki jaringan tubuh",
+          "D": "Menjadi sumber utama vitamin"
+        },
+        "correct": "C",
+        "explanation": "Protein menyediakan asam amino yang diperlukan untuk pertumbuhan, pemeliharaan, dan perbaikan jaringan tubuh.",
+        "sort_order": 3
+      },
+      {
+        "question": "Manakah yang merupakan contoh sumber lemak tidak jenuh?",
+        "options": {
+          "A": "Minyak zaitun",
+          "B": "Gula pasir",
+          "C": "Putih telur",
+          "D": "Air mineral"
+        },
+        "correct": "A",
+        "explanation": "Minyak zaitun mengandung lemak tidak jenuh yang dapat menjadi bagian dari pola makan sehat.",
+        "sort_order": 4
+      },
+      {
+        "question": "Apa fungsi utama serat pangan dalam sistem pencernaan?",
+        "options": {
+          "A": "Menggantikan kebutuhan protein",
+          "B": "Membantu melancarkan buang air besar",
+          "C": "Meningkatkan kadar gula secara langsung",
+          "D": "Menggantikan kebutuhan cairan"
+        },
+        "correct": "B",
+        "explanation": "Serat membantu menjaga fungsi pencernaan dan mendukung keteraturan buang air besar.",
+        "sort_order": 5
+      },
+      {
+        "question": "Vitamin apa yang membantu tubuh menyerap kalsium untuk menjaga kesehatan tulang?",
+        "options": {
+          "A": "Vitamin A",
+          "B": "Vitamin B1",
+          "C": "Vitamin C",
+          "D": "Vitamin D"
+        },
+        "correct": "D",
+        "explanation": "Vitamin D membantu penyerapan kalsium, yang diperlukan untuk pembentukan dan pemeliharaan tulang.",
+        "sort_order": 6
+      },
+      {
+        "question": "Mengapa tubuh membutuhkan zat besi?",
+        "options": {
+          "A": "Untuk membantu pembentukan hemoglobin",
+          "B": "Untuk menggantikan fungsi protein",
+          "C": "Untuk menghasilkan vitamin C",
+          "D": "Untuk menjaga tubuh agar tidak membutuhkan air"
+        },
+        "correct": "A",
+        "explanation": "Zat besi merupakan komponen penting hemoglobin, yaitu protein dalam sel darah merah yang mengangkut oksigen.",
+        "sort_order": 7
+      },
+      {
+        "question": "Kebiasaan manakah yang mendukung pola makan sehat?",
+        "options": {
+          "A": "Mengonsumsi satu jenis makanan setiap hari",
+          "B": "Menghindari semua sumber lemak",
+          "C": "Mengonsumsi makanan beragam dengan porsi seimbang",
+          "D": "Mengganti semua makanan dengan suplemen"
+        },
+        "correct": "C",
+        "explanation": "Variasi makanan membantu memenuhi kebutuhan zat gizi yang berbeda-beda dan mendukung pola makan seimbang.",
+        "sort_order": 8
+      },
+      {
+        "question": "Apa tujuan utama membatasi konsumsi gula, garam, dan lemak secara berlebihan?",
+        "options": {
+          "A": "Agar tubuh tidak membutuhkan energi",
+          "B": "Untuk membantu mengurangi risiko masalah kesehatan",
+          "C": "Agar semua makanan terasa hambar",
+          "D": "Untuk menggantikan kebutuhan buah dan sayur"
+        },
+        "correct": "B",
+        "explanation": "Konsumsi gula, garam, dan lemak berlebihan dapat meningkatkan risiko berbagai masalah kesehatan, termasuk penyakit tidak menular.",
+        "sort_order": 9
+      },
+      {
+        "question": "Selain mengonsumsi makanan bergizi seimbang, kebiasaan apa yang dianjurkan untuk menjaga kesehatan?",
+        "options": {
+          "A": "Menghindari aktivitas fisik",
+          "B": "Tidur sesedikit mungkin",
+          "C": "Minum hanya ketika merasa sangat haus",
+          "D": "Melakukan aktivitas fisik secara teratur"
+        },
+        "correct": "D",
+        "explanation": "Aktivitas fisik teratur merupakan bagian dari gaya hidup sehat bersama pola makan seimbang, hidrasi yang cukup, dan istirahat yang memadai.",
+        "sort_order": 10
+      }
+    ]
+  },
+  {
+    "title": "Kenali Gizi dalam Makanan Indonesia",
+    "description": "mengenali sumber zat gizi dari hidangan khas Indonesia.",
+    "questions": [
+      {
+        "question": "Zat gizi apa yang terutama disumbangkan oleh ikan dalam hidangan pepes ikan?",
+        "options": {
+          "A": "Protein",
+          "B": "Vitamin C",
+          "C": "Karbohidrat",
+          "D": "Serat pangan"
+        },
+        "correct": "A",
+        "explanation": "Ikan merupakan sumber protein yang membantu pertumbuhan dan perbaikan jaringan tubuh.",
+        "sort_order": 1
+      },
+      {
+        "question": "Dalam hidangan nasi liwet, nasi terutama berfungsi sebagai sumber apa?",
+        "options": {
+          "A": "Vitamin D",
+          "B": "Karbohidrat",
+          "C": "Vitamin C",
+          "D": "Kalsium"
+        },
+        "correct": "B",
+        "explanation": "Beras mengandung pati, yaitu jenis karbohidrat yang digunakan tubuh sebagai sumber energi.",
+        "sort_order": 2
+      },
+      {
+        "question": "Bahan utama dalam gado-gado yang berkontribusi sebagai sumber serat adalah ....",
+        "options": {
+          "A": "Kerupuk",
+          "B": "Gula merah",
+          "C": "Sayuran",
+          "D": "Minyak goreng"
+        },
+        "correct": "C",
+        "explanation": "Sayuran mengandung serat pangan serta beragam vitamin dan mineral. Bumbu kacang juga menyumbangkan zat gizi lain, termasuk protein dan lemak.",
+        "sort_order": 3
+      },
+      {
+        "question": "Tempe yang digunakan sebagai lauk merupakan sumber protein yang berasal dari ....",
+        "options": {
+          "A": "Hewani",
+          "B": "Mineral",
+          "C": "Buah-buahan",
+          "D": "Nabati"
+        },
+        "correct": "D",
+        "explanation": "Tempe dibuat dari kedelai yang merupakan bahan pangan nabati dan sumber protein.",
+        "sort_order": 4
+      },
+      {
+        "question": "Zat gizi apa yang terutama terdapat dalam telur pada hidangan telur balado?",
+        "options": {
+          "A": "Protein",
+          "B": "Vitamin C",
+          "C": "Serat pangan",
+          "D": "Karbohidrat kompleks"
+        },
+        "correct": "A",
+        "explanation": "Telur mengandung protein berkualitas baik. Kuning telur juga mengandung lemak dan sejumlah vitamin serta mineral.",
+        "sort_order": 5
+      },
+      {
+        "question": "Sayur asem yang mengandung jagung, kacang panjang, dan labu siam dapat membantu menyediakan ....",
+        "options": {
+          "A": "Hanya karbohidrat",
+          "B": "Vitamin, mineral, dan serat",
+          "C": "Hanya lemak",
+          "D": "Hanya protein hewani"
+        },
+        "correct": "B",
+        "explanation": "Berbagai sayuran dalam sayur asem menyumbangkan vitamin, mineral, dan serat. Kandungan pastinya bergantung pada bahan dan jumlah yang digunakan.",
+        "sort_order": 6
+      },
+      {
+        "question": "Dalam hidangan soto ayam, ayam suwir terutama berfungsi sebagai sumber ....",
+        "options": {
+          "A": "Serat",
+          "B": "Vitamin C",
+          "C": "Protein",
+          "D": "Gula sederhana"
+        },
+        "correct": "C",
+        "explanation": "Daging ayam merupakan sumber protein hewani. Kandungan gizi keseluruhan soto juga dipengaruhi oleh kuah, bihun, nasi, dan pelengkapnya.",
+        "sort_order": 7
+      },
+      {
+        "question": "Bahan pangan manakah yang merupakan sumber karbohidrat utama dalam lontong sayur?",
+        "options": {
+          "A": "Telur rebus",
+          "B": "Santan",
+          "C": "Labu siam",
+          "D": "Lontong dari beras"
+        },
+        "correct": "D",
+        "explanation": "Lontong dibuat dari beras yang kaya akan pati sebagai sumber karbohidrat.",
+        "sort_order": 8
+      },
+      {
+        "question": "Mengapa urap sayur dapat menjadi bagian dari menu bergizi seimbang?",
+        "options": {
+          "A": "Mengandung sayuran dan kelapa parut yang menyumbangkan beragam zat gizi",
+          "B": "Mengandung semua zat gizi dalam jumlah sempurna",
+          "C": "Tidak mengandung energi sama sekali",
+          "D": "Dapat menggantikan seluruh kebutuhan protein harian"
+        },
+        "correct": "A",
+        "explanation": "Sayuran menyediakan serat, vitamin, dan mineral, sedangkan kelapa menyumbangkan lemak dan energi. Urap tetap perlu dipadukan dengan sumber makanan pokok dan protein sesuai kebutuhan.",
+        "sort_order": 9
+      },
+      {
+        "question": "Jika ingin menambah sumber protein nabati dalam menu makanan Indonesia, pilihan manakah yang paling tepat?",
+        "options": {
+          "A": "Sirup",
+          "B": "Tempe bacem",
+          "C": "Kerupuk singkong",
+          "D": "Es teh manis"
+        },
+        "correct": "B",
+        "explanation": "Tempe merupakan produk kedelai yang kaya protein nabati. Kandungan gula, garam, dan minyak pada hasil akhirnya bergantung pada resep yang digunakan.",
+        "sort_order": 10
+      }
+    ]
+  },
+  {
+    "title": "Tantangan Susun Piring Seimbang",
+    "description": "menerapkan prinsip gizi seimbang dalam situasi makan sehari-hari.",
+    "questions": [
+      {
+        "question": "Kamu makan nasi dan ayam goreng untuk makan siang. Apa yang paling tepat ditambahkan agar menu lebih beragam?",
+        "options": {
+          "A": "Nasi tambahan saja",
+          "B": "Kerupuk dan minuman manis",
+          "C": "Sayuran dan buah",
+          "D": "Ayam goreng tambahan saja"
+        },
+        "correct": "C",
+        "explanation": "Sayuran dan buah melengkapi menu dengan serat, vitamin, dan mineral. Porsi keseluruhan dapat disesuaikan dengan prinsip Isi Piringku.",
+        "sort_order": 1
+      },
+      {
+        "question": "Kamu ingin menyusun menu dengan sumber karbohidrat, protein, dan sayuran. Kombinasi manakah yang paling sesuai?",
+        "options": {
+          "A": "Nasi, ikan bakar, dan tumis kangkung",
+          "B": "Nasi, kerupuk, dan teh manis",
+          "C": "Kentang goreng, kerupuk, dan sirup",
+          "D": "Roti manis, biskuit, dan permen"
+        },
+        "correct": "A",
+        "explanation": "Nasi menyediakan karbohidrat, ikan menyediakan protein, dan kangkung menyumbangkan serat, vitamin, serta mineral.",
+        "sort_order": 2
+      },
+      {
+        "question": "Kamu makan gado-gado sebagai menu utama. Apa yang perlu diperhatikan agar pilihan tersebut mendukung gizi seimbang?",
+        "options": {
+          "A": "Menghilangkan seluruh sayuran",
+          "B": "Menambahkan gula sebanyak mungkin",
+          "C": "Mengonsumsi bumbu kacang saja",
+          "D": "Memperhatikan porsi dan melengkapi kebutuhan zat gizi yang belum terpenuhi"
+        },
+        "correct": "D",
+        "explanation": "Gado-gado menyediakan sayuran dan bumbu kacang, tetapi komposisi serta porsinya beragam. Sesuaikan dengan kebutuhan energi dan zat gizi, termasuk sumber makanan pokok dan protein.",
+        "sort_order": 3
+      },
+      {
+        "question": "Kamu memilih rawon dengan nasi untuk makan malam. Pelengkap manakah yang dapat menambah variasi sayuran?",
+        "options": {
+          "A": "Kerupuk tambahan",
+          "B": "Tauge pendek dan sayuran",
+          "C": "Sirup manis",
+          "D": "Permen"
+        },
+        "correct": "B",
+        "explanation": "Tauge dan sayuran menambah variasi bahan pangan serta membantu memenuhi kebutuhan serat, vitamin, dan mineral.",
+        "sort_order": 4
+      },
+      {
+        "question": "Kamu ingin membuat sarapan yang mengandung karbohidrat dan protein. Pilihan manakah yang paling tepat?",
+        "options": {
+          "A": "Teh manis dan permen",
+          "B": "Kerupuk dan sirup",
+          "C": "Nasi dan telur",
+          "D": "Minuman bersoda dan biskuit manis saja"
+        },
+        "correct": "C",
+        "explanation": "Nasi menyediakan karbohidrat, sedangkan telur menyediakan protein. Tambahkan sayuran atau buah agar sarapan lebih beragam.",
+        "sort_order": 5
+      },
+      {
+        "question": "Kamu membeli siomay sebagai makan siang. Apa yang dapat dilakukan agar menunya lebih beragam?",
+        "options": {
+          "A": "Menambahkan sayuran dan buah sesuai kebutuhan",
+          "B": "Mengganti air putih dengan minuman manis",
+          "C": "Menghilangkan semua sumber protein",
+          "D": "Menambahkan saus sebanyak mungkin tanpa memperhatikan porsi"
+        },
+        "correct": "A",
+        "explanation": "Sayuran dan buah membantu melengkapi variasi zat gizi. Porsi siomay dan saus juga perlu disesuaikan dengan kebutuhan makan.",
+        "sort_order": 6
+      },
+      {
+        "question": "Di rumah tersedia nasi, pepes ikan, sayur asem, dan jeruk. Mengapa kombinasi ini cukup beragam?",
+        "options": {
+          "A": "Karena seluruh bahan hanya mengandung karbohidrat",
+          "B": "Karena tidak mengandung energi",
+          "C": "Karena jeruk menggantikan semua fungsi lauk",
+          "D": "Karena menggabungkan makanan pokok, protein, sayuran, dan buah"
+        },
+        "correct": "D",
+        "explanation": "Nasi merupakan sumber karbohidrat, ikan menyediakan protein, sayur asem menyumbangkan sayuran, dan jeruk melengkapi menu dengan buah.",
+        "sort_order": 7
+      },
+      {
+        "question": "Kamu sering makan camilan gorengan di antara waktu makan. Kebiasaan manakah yang lebih baik untuk variasi camilan?",
+        "options": {
+          "A": "Hanya mengonsumsi gorengan setiap hari",
+          "B": "Memilih variasi camilan, seperti buah atau kacang dalam porsi sesuai kebutuhan",
+          "C": "Mengganti semua makanan utama dengan camilan",
+          "D": "Menghindari semua makanan yang mengandung energi"
+        },
+        "correct": "B",
+        "explanation": "Variasi camilan dapat membantu menyediakan zat gizi yang berbeda. Kacang juga mengandung protein dan lemak, sedangkan buah menyediakan serat serta berbagai vitamin.",
+        "sort_order": 8
+      },
+      {
+        "question": "Kamu menyusun menu nasi, ayam rica-rica, dan sayur lodeh. Hal apa yang perlu diperhatikan ketika mengonsumsi menu tersebut?",
+        "options": {
+          "A": "Tidak perlu memperhatikan porsi karena semua makanan tradisional selalu seimbang",
+          "B": "Menghindari air putih selama makan",
+          "C": "Memperhatikan porsi, jumlah santan, minyak, garam, dan variasi bahan pangan",
+          "D": "Menambahkan garam sampai rasanya sangat kuat"
+        },
+        "correct": "C",
+        "explanation": "Hidangan tradisional dapat menjadi bagian dari pola makan sehat. Namun, cara memasak, jumlah bumbu, porsi, dan kombinasi makanan memengaruhi keseimbangan menu.",
+        "sort_order": 9
+      },
+      {
+        "question": "Kamu ingin menyusun makan malam sesuai prinsip Isi Piringku. Pilihan manakah yang paling mendekati prinsip tersebut?",
+        "options": {
+          "A": "Setengah piring nasi dan setengah piring ayam",
+          "B": "Seluruh piring diisi sayuran tanpa makanan lain",
+          "C": "Seluruh piring diisi nasi dan kerupuk",
+          "D": "Sekitar setengah piring sayur dan buah, serta setengah lainnya makanan pokok dan lauk-pauk"
+        },
+        "correct": "D",
+        "explanation": "Isi Piringku menganjurkan pembagian tersebut, dengan sayuran mengambil porsi lebih banyak daripada buah pada bagian sayur dan buah.",
+        "sort_order": 10
+      }
+    ]
+  }
+]

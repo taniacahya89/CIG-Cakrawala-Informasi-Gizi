@@ -1,0 +1,35 @@
+<!-- Footer Component — CIG Design System -->
+<footer class="bg-[#C62828] text-white py-12 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Brand Info -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Cakrawala Informasi Gizi</h3>
+                <p class="text-sm text-red-100 leading-relaxed">
+                    &copy; 2026 Cakrawala Informasi Gizi &middot; Universitas Negeri Malang
+                </p>
+            </div>
+
+            <!-- Jelajahi Links -->
+            <div class="space-y-3">
+                <h3 class="text-lg font-bold">Jelajahi</h3>
+                <ul class="space-y-2 text-sm text-red-100">
+                    <li><a href="{{ url_for('main.index') }}" class="hover:text-white transition-colors">Beranda</a></li>
+                    <li><a href="{{ url_for('main.scan_makanan') }}" class="hover:text-white transition-colors">Scan Makanan</a></li>
+                    <li><a href="{{ url_for('content.modules') }}" class="hover:text-white transition-colors">Modul Edukasi</a></li>
+                    <li><a href="{{ url_for('content.quiz_list') }}" class="hover:text-white transition-colors">Kuis</a></li>
+                    <li><a href="{{ url_for('content.recipes') }}" class="hover:text-white transition-colors">Resep</a></li>
+                </ul>
+            </div>
+
+            <!-- Tentang Links -->
+            <div class="space-y-3">
+                <h3 class="text-lg font-bold">Tentang</h3>
+                <ul class="space-y-2 text-sm text-red-100">
+                    <li><a href="#isi-piringku" class="hover:text-white transition-colors">Isi Piringku</a></li>
+                    <li><a href="https://um.ac.id" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Universitas Negeri Malang</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

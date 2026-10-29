@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Modul Edukasi — {{ app_short_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Header -->
+    <div class="text-center mb-12">
+        <span class="inline-block bg-green-100 text-[#1B5E20] text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+            EDUKASI GIZI
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#1B5E20] mb-4">
+            Modul Edukasi Gizi
+        </h1>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+            Pelajari gizi seimbang melalui artikel yang disusun untuk masyarakat Indonesia.
+        </p>
+    </div>
+
+    <!-- Module Cards Grid -->
+    {% if items %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for item in items %}
+        <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg hover:border-green-200 transition-all duration-300 group">
+            <!-- Card Image Header -->
+            <div class="h-40 bg-gradient-to-br from-green-50 to-green-100 relative overflow-hidden">
+                {% if item.image_path %}
+                <img src="{{ url_for('static', filename=item.image_path) }}" 
+                     alt="{{ item.title }}"
+                     class="w-full h-full object-cover">
+                {% else %}
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <svg class="w-16 h-16 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                {% endif %}
+                
+                <!-- Category Badge -->
+                <div class="absolute top-3 left-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-[#1B5E20] shadow-sm">
+                        {{ item.category }}
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Card Body -->
+            <div class="p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#1B5E20] transition-colors line-clamp-2">
+                    {{ item.title }}
+                </h2>
+                <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+                    {{ item.content[:150] }}{% if item.content|length > 150 %}...{% endif %}
+                </p>
+                
+                {% if current_user.is_authenticated %}
+                <div class="flex items-center gap-2 mb-4">
+                    {% set status = progress.get(item.id) %}
+                    {% if status == 'completed' %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Selesai
+                    </span>
+                    {% elif status == 'in_progress' %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Sedang Dipelajari
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                        Belum Dimulai
+                    </span>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <a href="{{ url_for('content.module_detail', slug=item.slug) }}" 
+                   class="inline-flex items-center justify-center w-full px-4 py-3 rounded-xl bg-[#1B5E20] text-white font-semibold hover:bg-[#0D330E] transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    Baca Materi
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+        </svg>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Belum Ada Modul</h3>
+        <p class="text-gray-500">Modul edukasi akan segera hadir.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
+{% endblock %}

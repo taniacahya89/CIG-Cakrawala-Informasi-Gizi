@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}Beranda — {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="space-y-16 sm:space-y-24 py-8 sm:py-12">
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Left Text Content -->
+            <div class="lg:col-span-7 space-y-6">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                    <span class="text-[#1B5E20]">Kenali</span> <span class="text-[#C62828]">Isi</span><br>
+                    <span class="text-[#C62828]">Piringmu</span><span class="text-[#1B5E20]">, Sudah</span><br>
+                    <span class="text-[#1B5E20]">Seimbang Belum?</span>
+                </h1>
+
+                <p class="text-gray-700 text-lg sm:text-xl max-w-xl leading-relaxed">
+                    Scan makananmu dan lihat bagaimana komposisinya berdasarkan panduan Isi Piringku.
+                </p>
+
+                <div>
+                    <a href="{{ url_for('main.scan_makanan') }}"
+                       class="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#C62828] hover:bg-[#B71C1C] text-white font-semibold text-base sm:text-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m0 14v1m8-8h-1M5 12H4m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M9 9h6v6H9z"/>
+                        </svg>
+                        <span>Scan Isi Piringmu</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Hero Image -->
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative w-72 h-72 sm:w-96 sm:h-96 lg:w-[420px] lg:h-[420px]">
+                    <img src="{{ url_for('static', filename='images/hero-bowl.png') }}"
+                         alt="Piring Makanan Sehat Bergizi Seimbang"
+                         class="w-full h-full object-contain filter drop-shadow-2xl animate-fade-in"
+                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/hero-fallback.svg') }}';">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ISI PIRINGKU SECTION -->
+    <section id="isi-piringku" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-10">
+            <!-- Left Banner Image -->
+            <div class="lg:col-span-6">
+                <div class="rounded-3xl overflow-hidden shadow-sm border border-red-100 bg-white p-2">
+                    <img src="{{ url_for('static', filename='images/isi-piringku-banner.png') }}"
+                         alt="Panduan Isi Piringku Kemenkes RI"
+                         class="w-full h-auto object-cover rounded-2xl"
+                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/isi-piringku-fallback.svg') }}';">
+                </div>
+            </div>
+
+            <!-- Right Explanation -->
+            <div class="lg:col-span-6 space-y-4">
+                <div class="inline-block">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-[#1B5E20]">
+                        Isi Piringku
+                    </h2>
+                    <div class="h-1 w-24 bg-[#C62828] mt-2 rounded-full"></div>
+                </div>
+                <p class="text-gray-800 text-lg sm:text-xl leading-relaxed">
+                    Isi Piringku adalah panduan Kementerian Kesehatan RI untuk membantu mengatur makanan yang beragam dan seimbang.
+                </p>
+            </div>
+        </div>
+
+        <!-- 4 Portion Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Card 1 -->
+            <div class="bg-[#C62828] rounded-2xl p-6 text-white text-center shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-xl sm:text-2xl font-bold">&frac13; bagian piring</div>
+                <div class="text-xs sm:text-sm text-red-100 mt-2 font-medium">Sumber karbohidrat</div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-[#C62828] rounded-2xl p-6 text-white text-center shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-xl sm:text-2xl font-bold">&frac16; bagian piring</div>
+                <div class="text-xs sm:text-sm text-red-100 mt-2 font-medium">Sumber protein</div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-[#C62828] rounded-2xl p-6 text-white text-center shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-xl sm:text-2xl font-bold">&frac13; bagian piring</div>
+                <div class="text-xs sm:text-sm text-red-100 mt-2 font-medium">Sumber vitamin & mineral</div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="bg-[#C62828] rounded-2xl p-6 text-white text-center shadow-sm hover:shadow-md transition-shadow">
+                <div class="text-xl sm:text-2xl font-bold">&frac16; bagian piring</div>
+                <div class="text-xs sm:text-sm text-red-100 mt-2 font-medium">Sumber vitamin & serat</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAKRAWALA INFORMASI GIZI (CIG) INTRO SECTION -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <div class="inline-block">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[#1B5E20]">
+                Cakrawala Informasi Gizi (CIG)
+            </h2>
+            <div class="h-1 w-32 bg-[#C62828] mx-auto mt-2 rounded-full"></div>
+        </div>
+
+        <p class="text-gray-800 text-base sm:text-lg lg:text-xl leading-relaxed text-justify sm:text-center">
+            <strong>Cakrawala Informasi Gizi (CIG)</strong> adalah platform digital edukasi gizi yang dikembangkan di <strong>Universitas Negeri Malang</strong> untuk membantu kamu memahami makanan dan pola makan seimbang. CIG menghadirkan <strong>panduan Isi Piringku, informasi gizi, dan fitur interaktif</strong> yang dekat dengan keseharian.
+        </p>
+    </section>
+
+    <!-- APA YANG KAMI TAWARKAN? SECTION -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#D32F2F] text-center mb-10">
+            Apa yang kami Tawarkan?
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Card 1: Scan Makanan -->
+            <a href="{{ url_for('main.scan_makanan') }}"
+               class="group block bg-[#FEE2E2]/60 hover:bg-[#FEE2E2] rounded-3xl p-6 sm:p-8 border-2 border-[#C62828] shadow-sm hover:shadow-md transition-all duration-200">
+                <div class="flex items-start justify-between">
+                    <h3 class="text-2xl font-extrabold text-gray-900 leading-tight">
+                        Scan<br>Makanan
+                    </h3>
+                    <span class="w-10 h-10 rounded-full bg-[#C62828] text-white flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                        &#8599;
+                    </span>
+                </div>
+                <div class="border-b border-gray-300 my-5"></div>
+                <p class="text-gray-800 text-sm sm:text-base font-medium">
+                    Kenali isi piringmu dengan lebih mudah.
+                </p>
+            </a>
+
+            <!-- Card 2: Edukasi Gizi -->
+            <a href="{{ url_for('content.modules') }}"
+               class="group block bg-[#FEE2E2]/60 hover:bg-[#FEE2E2] rounded-3xl p-6 sm:p-8 border-2 border-[#C62828] shadow-sm hover:shadow-md transition-all duration-200">
+                <div class="flex items-start justify-between">
+                    <h3 class="text-2xl font-extrabold text-gray-900 leading-tight">
+                        Edukasi<br>Gizi
+                    </h3>
+                    <span class="w-10 h-10 rounded-full bg-[#C62828] text-white flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                        &#8599;
+                    </span>
+                </div>
+                <div class="border-b border-gray-300 my-5"></div>
+                <p class="text-gray-800 text-sm sm:text-base font-medium">
+                    Belajar gizi tanpa terasa rumit.
+                </p>
+            </a>
+
+            <!-- Card 3: Meal Tracker -->
+            <a href="{{ url_for('main.scan_makanan') }}"
+               class="group block bg-[#FEE2E2]/60 hover:bg-[#FEE2E2] rounded-3xl p-6 sm:p-8 border-2 border-[#C62828] shadow-sm hover:shadow-md transition-all duration-200">
+                <div class="flex items-start justify-between">
+                    <h3 class="text-2xl font-extrabold text-gray-900 leading-tight">
+                        Meal<br>Tracker
+                    </h3>
+                    <span class="w-10 h-10 rounded-full bg-[#C62828] text-white flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                        &#8599;
+                    </span>
+                </div>
+                <div class="border-b border-gray-300 my-5"></div>
+                <p class="text-gray-800 text-sm sm:text-base font-medium">
+                    Kenali pola makanmu sehari-hari.
+                </p>
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}

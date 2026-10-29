@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} — {{ app_short_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-16 text-center">
+    <div class="flex flex-col items-center justify-center gap-3 mb-6">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 text-[#C62828] shadow-inner">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+        </div>
+        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">
+            Tahap Pengembangan Berikutnya
+        </span>
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-[#1B5E20] mb-4">
+        {{ page_title }}
+    </h1>
+
+    <p class="text-gray-600 max-w-xl mx-auto text-base sm:text-lg mb-8 leading-relaxed">
+        {{ description }}
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="{{ url_for('main.index') }}"
+           class="inline-flex items-center px-6 py-3 rounded-full bg-[#C62828] text-white font-medium hover:bg-[#B71C1C] transition-colors shadow-sm">
+            &larr; Kembali ke Beranda
+        </a>
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.register') }}"
+               class="inline-flex items-center px-6 py-3 rounded-full bg-white text-[#C62828] border border-[#C62828] font-medium hover:bg-red-50 transition-colors">
+                Daftar Akun Sekarang
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

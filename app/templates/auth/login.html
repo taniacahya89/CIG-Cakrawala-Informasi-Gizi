@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Masuk — {{ app_short_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-16rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-red-100">
+        <div class="text-center">
+            <span class="inline-block bg-[#C62828] text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
+                CIG
+            </span>
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+                Selamat Datang Kembali
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Masuk ke akun Anda untuk mengakses fitur CIG
+            </p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="space-y-4">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ form.email.label.text }}
+                    </label>
+                    {{ form.email(class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C62828] focus:border-transparent outline-none transition-all text-sm " + ("border-red-500" if form.email.errors else ""), placeholder="nama@email.com", id="email") }}
+                    {% for error in form.email.errors %}
+                        <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="password" class="block text-sm font-medium text-gray-700">
+                            {{ form.password.label.text }}
+                        </label>
+                        <a href="{{ url_for('auth.forgot_password') }}" class="text-xs text-[#C62828] hover:underline font-medium">
+                            Lupa kata sandi?
+                        </a>
+                    </div>
+                    {{ form.password(class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C62828] focus:border-transparent outline-none transition-all text-sm " + ("border-red-500" if form.password.errors else ""), placeholder="••••••••", id="password") }}
+                    {% for error in form.password.errors %}
+                        <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="flex items-center">
+                    {{ form.remember(class="h-4 w-4 text-[#C62828] focus:ring-[#C62828] border-gray-300 rounded") }}
+                    <label for="remember" class="ml-2 block text-sm text-gray-700">
+                        {{ form.remember.label.text }}
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                {{ form.submit(class="w-full py-3 px-4 rounded-full bg-[#C62828] hover:bg-[#B71C1C] text-white font-semibold text-sm transition-all duration-200 cursor-pointer shadow-sm") }}
+            </div>
+
+            <div class="text-center text-sm text-gray-600">
+                Belum memiliki akun?
+                <a href="{{ url_for('auth.register') }}" class="text-[#C62828] font-semibold hover:underline">
+                    Daftar di sini
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

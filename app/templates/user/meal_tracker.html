@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block title %}Meal Tracker{% endblock %}{% block content %}
+<section class="c-wrap"><header class="c-head"><h1>Meal Tracker</h1><p>Riwayat pemindaian makanan menurut tanggal dan waktu. Scan bukan bukti makanan telah dikonsumsi.</p></header>
+<div class="c-grid">{% for scan in scans %}<article class="c-card"><h2>{{ scan.scanned_at.strftime('%d %B %Y — %H:%M') }}</h2><p class="c-muted">Proporsi area visual hasil segmentasi</p>
+{% for category,percent in scan.area_percentages.items() %}<p>{{ category }}: {{ percent }}%</p>{% endfor %}</article>{% else %}<div class="c-card"><h2>Belum ada riwayat scan</h2><p>Riwayat akan muncul setelah model AI terintegrasi dan pemindaian berhasil.</p><a href="{{ url_for('main.scan_makanan') }}" class="c-pill">Ke fitur scan</a></div>{% endfor %}</div></section>{% endblock %}

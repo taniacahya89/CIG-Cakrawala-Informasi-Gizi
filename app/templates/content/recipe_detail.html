@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ item.title }} — {{ app_short_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Back Link -->
+    <a href="{{ url_for('content.recipes') }}" class="inline-flex items-center gap-2 text-gray-600 hover:text-[#C62828] transition-colors mb-6">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Kembali ke resep
+    </a>
+
+    <!-- Recipe Header -->
+    <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <!-- Recipe Image -->
+        {% if item.image_path %}
+        <div class="h-64 sm:h-80 overflow-hidden">
+            <img src="{{ url_for('static', filename=item.image_path) }}" 
+                 alt="{{ item.title }}" 
+                 class="w-full h-full object-cover">
+        </div>
+        {% else %}
+        <div class="h-48 sm:h-64 bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
+            <svg class="w-20 h-20 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        {% endif %}
+
+        <div class="p-6 sm:p-8">
+            <!-- Category & Title -->
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700 mb-4">
+                {{ item.category }}
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4">
+                {{ item.title }}
+            </h1>
+
+            <!-- Meta Info -->
+            {% if item.servings or item.prep_minutes or item.cook_minutes %}
+            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8 pb-8 border-b border-gray-100">
+                {% if item.servings %}
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {{ item.servings }} porsi
+                </span>
+                {% endif %}
+                {% if item.prep_minutes %}
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Persiapan {{ item.prep_minutes }} menit
+                </span>
+                {% endif %}
+                {% if item.cook_minutes %}
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                    </svg>
+                    Memasak {{ item.cook_minutes }} menit
+                </span>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Ingredients -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-[#1B5E20] mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                    </svg>
+                    Bahan-bahan
+                </h2>
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <pre class="whitespace-pre-line text-gray-700 leading-relaxed font-sans">{{ item.ingredients }}</pre>
+                </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-[#1B5E20] mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    Cara Memasak
+                </h2>
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <pre class="whitespace-pre-line text-gray-700 leading-relaxed font-sans">{{ item.steps }}</pre>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            {% if item.tips %}
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-[#1B5E20] mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    Tips Penyajian
+                </h2>
+                <div class="bg-green-50 border border-green-100 rounded-xl p-6">
+                    <pre class="whitespace-pre-line text-gray-700 leading-relaxed font-sans">{{ item.tips }}</pre>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-4 pt-8 border-t border-gray-100">
+                {% if current_user.is_authenticated %}
+                <form method="post" action="{{ url_for('content.recipe_favorite', slug=item.slug) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" 
+                            class="inline-flex items-center gap-2 px-6 py-3 rounded-full {{ 'bg-gray-100 text-gray-700 hover:bg-gray-200' if favorite else 'bg-[#C62828] text-white hover:bg-[#B71C1C]' }} transition-colors font-semibold">
+                        <svg class="w-5 h-5 {{ 'fill-current' if favorite else 'fill-none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        {{ 'Hapus dari favorit' if favorite else 'Simpan ke favorit' }}
+                    </button>
+                </form>
+                {% else %}
+                <a href="{{ url_for('auth.login') }}" 
+                   class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors font-semibold">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    Masuk untuk menyimpan favorit
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </article>
+</div>
+{% endblock %}

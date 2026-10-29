@@ -1,0 +1,71 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules
+node_modules/
+
+# Distribution
+dist/
+build/
+*.egg-info/
+
+# Database
+*.db
+*.sqlite3
+
+# Migrations
+migrations/versions/__pycache__/
+
+# Compiled CSS (regenerate with tailwind)
+# app/static/css/output.css
+
+# Test cache
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Logs
+*.log
+
+# Uploaded images (local development only - not tracked in git)
+app/static/uploads/
+
+# File environment tambahan
+.env.*
+!.env.example
+
+# Model AI dan hasil training
+*.pt
+runs/
+
+# Backup database
+*.dump
+*.backup
+
+# Arsip proyek
+*.zip
+
+# File rahasia lainnya
+*.pem
+*.keyreferences/
+references/

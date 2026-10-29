@@ -1,0 +1,23 @@
+<!-- Flash Messages Component -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="max-w-4xl mx-auto px-4 mt-6">
+            {% for category, message in messages %}
+                {% set bg_color = 'bg-red-50 border-red-500 text-red-800' %}
+                {% if category == 'success' %}
+                    {% set bg_color = 'bg-green-50 border-green-500 text-green-800' %}
+                {% elif category == 'info' %}
+                    {% set bg_color = 'bg-blue-50 border-blue-500 text-blue-800' %}
+                {% elif category == 'warning' %}
+                    {% set bg_color = 'bg-amber-50 border-amber-500 text-amber-800' %}
+                {% endif %}
+                <div class="border-l-4 p-4 rounded-r-lg mb-3 flex items-center justify-between shadow-sm {{ bg_color }}" role="alert">
+                    <span class="text-sm font-medium">{{ message }}</span>
+                    <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-700 ml-4">
+                        &times;
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}

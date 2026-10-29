@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ item.title }} — {{ app_short_name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Back Link -->
+    <a href="{{ url_for('content.modules') }}" class="inline-flex items-center gap-2 text-gray-600 hover:text-[#C62828] transition-colors mb-6">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Semua materi
+    </a>
+
+    <!-- Article -->
+    <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <!-- Header with Image -->
+        {% if item.image_path %}
+        <div class="h-64 sm:h-80 overflow-hidden">
+            <img src="{{ url_for('static', filename=item.image_path) }}" 
+                 alt="{{ item.title }}"
+                 class="w-full h-full object-cover">
+        </div>
+        {% endif %}
+        
+        <!-- Header Text -->
+        <div class="bg-gradient-to-r from-[#1B5E20] to-[#2E7D32] text-white p-8 sm:p-10{% if not item.image_path %} mt-0{% else %} border-t-0{% endif %}">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white mb-4">
+                {{ item.category }}
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-extrabold leading-tight">
+                {{ item.title }}
+            </h1>
+        </div>
+
+        <!-- Content -->
+        <div class="p-8 sm:p-10">
+            <div class="prose prose-lg max-w-none text-gray-700">
+                <pre class="whitespace-pre-line text-gray-700 leading-relaxed font-sans">{{ item.content }}</pre>
+            </div>
+
+            <!-- Completion Section -->
+            <div class="mt-12 pt-8 border-t border-gray-100" id="end-of-article">
+                {% if current_user.is_authenticated %}
+                    {% if progress.status == 'completed' %}
+                    <div class="bg-green-50 border border-green-100 rounded-xl p-6 flex items-center gap-4">
+                        <div class="p-3 rounded-full bg-green-100 text-[#1B5E20]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-[#1B5E20]">Materi Selesai</h3>
+                            <p class="text-sm text-gray-600">Anda telah menyelesaikan modul ini.</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <p class="text-gray-600 mb-4">Tandai materi ini sebagai selesai setelah membacanya.</p>
+                        <form id="complete-form" method="post" action="{{ url_for('content.module_complete', slug=item.slug) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" 
+                                    class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1B5E20] text-white font-semibold hover:bg-[#0D330E] transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Tandai Selesai
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="bg-gray-50 rounded-xl p-6 text-center">
+                    <p class="text-gray-600">Masuk untuk menyimpan progres belajar Anda.</p>
+                    <a href="{{ url_for('auth.login') }}" 
+                       class="inline-block mt-4 px-6 py-3 rounded-full bg-[#C62828] text-white font-semibold hover:bg-[#B71C1C] transition-colors">
+                        Masuk
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </article>
+</div>
+
+{% block extra_js %}
+{% if current_user.is_authenticated and progress.status != 'completed' %}
+<script>
+(function(){
+    const target = document.getElementById('end-of-article');
+    const form = document.getElementById('complete-form');
+    if (!target || !form) return;
+    
+    let fired = false;
+    const obs = new IntersectionObserver(function(entries) {
+        if (!fired && entries.some(function(e) { return e.isIntersecting; }) && window.scrollY > 50) {
+            fired = true;
+            form.requestSubmit();
+            obs.disconnect();
+        }
+    }, { threshold: 0.75 });
+    
+    obs.observe(target);
+})();
+</script>
+{% endif %}
+{% endblock %}
