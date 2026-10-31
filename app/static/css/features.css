@@ -41,3 +41,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* Scanner: scoped CIG red / dark-green style, no new design dependency. */
+.cig-scan-upload{max-width:850px;margin:0 auto 1.75rem}.cig-scan-upload h2,.cig-scan-results h2,.cig-scan-explain h2{font-size:1.35rem;font-weight:800;color:#1B5E20;margin-bottom:.6rem}
+.cig-scan-label{display:block;margin:1.3rem 0 .6rem;font-weight:700;color:#1B5E20}.cig-scan-photo-picker{border:2px dashed #efcccc;border-radius:1rem;background:#fff9f9;padding:1.1rem}
+.cig-scan-photo-picker input{display:block;width:100%;max-width:100%;font:inherit}.cig-scan-photo-picker img{width:100%;max-height:360px;object-fit:contain;margin-top:1rem;border-radius:.8rem;background:#fff}
+.cig-scan-note{margin:1rem 0 0;font-size:.9rem;color:#555}.cig-scan-note a,.cig-scan-related a{color:#A71F1F;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.cig-camera{margin:1rem 0}.cig-camera video{max-width:100%;max-height:340px;border-radius:1rem;background:#222}
+.cig-scan-results{display:grid;gap:1.2rem}.cig-scan-results p{line-height:1.75;margin:.6rem 0}.cig-scan-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.2rem 0}
+.cig-scan-images figure{min-width:0;margin:0}.cig-scan-images img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:#f7f2f2;border:1px solid #f0dddd;border-radius:1rem}.cig-scan-images figcaption{text-align:center;color:#666;font-size:.84rem;margin-top:.4rem}
+.cig-scan-stats{display:grid;gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}.cig-scan-stat-title{display:flex;align-items:center;gap:.55rem;font-size:.95rem;margin-bottom:.45rem}.cig-scan-stat-title strong{margin-left:auto;color:#1B5E20}.cig-scan-dot{width:13px;height:13px;border-radius:50%;display:inline-block;flex-shrink:0}.cig-scan-related{display:flex;flex-direction:column;gap:.75rem;margin-top:1rem}.cig-history-preview{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:1rem;background:#f7f2f2;margin-bottom:1rem}.cig-history-percent{display:flex;justify-content:space-between;gap:1rem;margin:.4rem 0!important}.cig-history-percent strong{color:#1B5E20}
+@media(max-width:640px){.cig-scan-images,.cig-scan-stats{grid-template-columns:1fr}.cig-scan-upload{padding:1.25rem}}

@@ -112,16 +112,29 @@ def accept_invite(token):
     # Check if user already exists
     existing_user = User.query.filter_by(email=invitation.email).first()
 
+    # Existing accounts must prove ownership with their password via login.
+    # Possessing an emailed invitation alone must not log someone into an
+    # already registered user's account.
+    if existing_user:
+        if not current_user.is_authenticated:
+            flash('Masuk ke akun yang sudah terdaftar sebelum menerima undangan.', 'info')
+            return redirect(url_for('auth.login', next=request.path))
+        if current_user.id != existing_user.id:
+            from flask import abort
+            abort(403)
+        if request.method == 'POST':
+            existing_user.role = 'admin'
+            accept_admin_invitation(token)
+            db.session.commit()
+            flash('Akun Anda telah ditingkatkan menjadi administrator.', 'success')
+            return redirect(url_for('admin.dashboard'))
+
     form = AcceptInviteForm()
 
     if form.validate_on_submit():
         if existing_user:
-            # Upgrade existing user to admin
-            existing_user.role = 'admin'
-            accept_admin_invitation(token)
-            db.session.commit()
-            login_user(existing_user)
-            flash('Selamat! Akun Anda telah ditingkatkan menjadi administrator.', 'success')
+            # Existing user upgrade is handled above after login verification.
+            return redirect(url_for('admin.dashboard'))
         else:
             # Create new admin user
             user = User(

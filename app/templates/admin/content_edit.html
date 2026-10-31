@@ -66,7 +66,9 @@
                 </div>
                 {% endif %}
                 
-                <!-- Upload New Image -->
+                <!-- Upload Image (existing content only). New content uses the
+                     image input inside the main form below. -->
+                {% if record %}
                 <form method="post" action="{{ url_for('admin.content_upload_image', kind=kind, record_id=record.id if record else 0) }}" 
                       enctype="multipart/form-data" class="space-y-3">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -90,17 +92,32 @@
                             Unggah
                         </button>
                     </div>
+                    <img id="edit-image-preview" alt="Pratinjau gambar sebelum diunggah"
+                         class="hidden max-h-48 rounded-xl border border-gray-200 object-contain" />
                     <p class="text-xs text-gray-500">
                         Format: JPEG, PNG, atau WebP. Maksimal 5 MB. Gambar akan dioptimalkan secara otomatis.
                     </p>
                 </form>
+                {% else %}
+                <p class="text-sm text-gray-600">Anda dapat memilih gambar saat membuat konten. Foto akan disimpan bersama judul dan isi artikel.</p>
+                {% endif %}
             </div>
             {% endif %}
 
             <!-- Content Form -->
-            <form method="post" class="space-y-6">
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 
+                {% if not record and kind in ('module', 'quiz', 'recipe') %}
+                <div class="p-4 border border-gray-200 rounded-xl bg-gray-50">
+                    <label for="new-cover-image" class="block text-sm font-semibold text-gray-700 mb-2">Gambar sampul (opsional)</label>
+                    <input id="new-cover-image" type="file" name="image" accept="image/jpeg,image/png,image/webp"
+                           class="block w-full text-sm text-gray-700" />
+                    <p class="text-xs text-gray-500 mt-1">JPG, PNG, atau WebP; maksimal 5 MB.</p>
+                    <img id="new-image-preview" alt="Pratinjau gambar sampul"
+                         class="hidden mt-3 max-h-48 rounded-xl border border-gray-200 object-contain" />
+                </div>
+                {% endif %}
                 <!-- Title Field -->
                 <div>
                     <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -345,4 +362,31 @@
     </a>
 </div>
 {% endif %}
+{% endblock %}
+{% block extra_js %}
+<script>
+(function () {
+  for (const [inputId, previewId] of [
+    ['image-upload', 'edit-image-preview'],
+    ['new-cover-image', 'new-image-preview']
+  ]) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    if (!input || !preview) continue;
+    let lastUrl = null;
+    input.addEventListener('change', function () {
+      if (lastUrl) URL.revokeObjectURL(lastUrl);
+      const file = input.files && input.files[0];
+      if (!file || !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+        return;
+      }
+      lastUrl = URL.createObjectURL(file);
+      preview.src = lastUrl;
+      preview.classList.remove('hidden');
+    });
+  }
+})();
+</script>
 {% endblock %}

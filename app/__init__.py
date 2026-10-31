@@ -78,6 +78,12 @@ def register_error_handlers(app):
         db.session.rollback()
         return render_template('errors/500.html'), 500
 
+    @app.errorhandler(413)
+    def upload_too_large(error):
+        from flask import flash, redirect, request, url_for
+        flash('File terlalu besar. Gambar maksimal 5 MB.', 'danger')
+        return redirect(url_for('admin.content_index')) if request.path.startswith('/admin/') else ('File terlalu besar.', 413)
+
     @app.errorhandler(429)
     def too_many_requests(error):
         from flask import render_template

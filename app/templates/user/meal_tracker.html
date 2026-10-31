@@ -1,4 +1,34 @@
-{% extends 'base.html' %}{% block title %}Meal Tracker{% endblock %}{% block content %}
-<section class="c-wrap"><header class="c-head"><h1>Meal Tracker</h1><p>Riwayat pemindaian makanan menurut tanggal dan waktu. Scan bukan bukti makanan telah dikonsumsi.</p></header>
-<div class="c-grid">{% for scan in scans %}<article class="c-card"><h2>{{ scan.scanned_at.strftime('%d %B %Y — %H:%M') }}</h2><p class="c-muted">Proporsi area visual hasil segmentasi</p>
-{% for category,percent in scan.area_percentages.items() %}<p>{{ category }}: {{ percent }}%</p>{% endfor %}</article>{% else %}<div class="c-card"><h2>Belum ada riwayat scan</h2><p>Riwayat akan muncul setelah model AI terintegrasi dan pemindaian berhasil.</p><a href="{{ url_for('main.scan_makanan') }}" class="c-pill">Ke fitur scan</a></div>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Meal Tracker{% endblock %}
+{% block content %}
+<section class="c-wrap">
+  <header class="c-head">
+    <h1>Meal Tracker</h1>
+    <p>Riwayat foto dan hasil pemindaian makanan. Ini bukan catatan pasti makanan yang dikonsumsi, gram, atau kalori.</p>
+    <a href="{{ url_for('main.scan_makanan') }}" class="c-pill">Scan Foto Baru</a>
+  </header>
+  <div class="c-grid">
+    {% for scan in scans %}
+    <article class="c-card cig-history-card">
+      {% if scan.overlay_path %}
+        <img class="cig-history-preview" src="{{ url_for('main.scan_media', scan_id=scan.id, kind='overlay') }}" alt="Overlay hasil segmentasi makanan" loading="lazy">
+      {% endif %}
+      <h2>{{ scan.scanned_at.strftime('%d/%m/%Y %H:%M') }} UTC</h2>
+      <p class="c-muted">Persentase area visual terdeteksi</p>
+      {% for category, percent in scan.area_percentages.items() %}
+        <p class="cig-history-percent"><span>{{ category|capitalize }}</span><strong>{{ '%.1f'|format(percent) }}%</strong></p>
+      {% endfor %}
+      <div class="c-actions">
+        <a class="c-pill c-outline" target="_blank" rel="noopener" href="{{ url_for('main.scan_media', scan_id=scan.id, kind='original') }}">Foto Asli</a>
+        <form method="POST" action="{{ url_for('main.scan_delete', scan_id=scan.id) }}" onsubmit="return confirm('Hapus riwayat scan ini?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="c-pill" type="submit">Hapus</button>
+        </form>
+      </div>
+    </article>
+    {% else %}
+    <div class="c-card"><h2>Belum ada riwayat scan</h2><p>Lakukan pemindaian foto makanan ketika login untuk menyimpan hasil secara otomatis.</p><a href="{{ url_for('main.scan_makanan') }}" class="c-pill">Mulai Scan</a></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

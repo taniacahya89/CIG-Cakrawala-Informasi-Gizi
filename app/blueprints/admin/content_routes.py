@@ -88,12 +88,30 @@ def content_edit(kind,record_id=None):
                 if not row.explanation:
                     raise ValueError('Pembahasan wajib diisi.')
                 row.sort_order=int(request.form.get('sort_order','0'))
+            # Creating a record can include its cover photo in the same request.
+            # Save the media first, then commit the database; remove it on failure.
+            created_image_path = None
+            uploaded = request.files.get('image') if kind in ('module', 'quiz', 'recipe') else None
+            if uploaded and uploaded.filename:
+                from app.utils.image_upload import process_and_save_image
+                success, result, _ = process_and_save_image(uploaded, kind)
+                if not success:
+                    raise ValueError(result)
+                created_image_path = result
+                # Record the path only after actual decoding/optimization succeeded.
+                row.image_path = created_image_path
             db.session.commit()
         except (ValueError,TypeError) as exc:
+            if locals().get('created_image_path'):
+                from app.utils.image_upload import delete_image_file
+                delete_image_file(created_image_path)
             db.session.rollback()
             flash(str(exc),'danger')
             return redirect(request.url)
         except Exception:
+            if locals().get('created_image_path'):
+                from app.utils.image_upload import delete_image_file
+                delete_image_file(created_image_path)
             db.session.rollback()
             flash('Penyimpanan gagal. Periksa kemungkinan judul atau slug duplikat.','danger')
             return redirect(request.url)
@@ -117,76 +135,63 @@ def content_archive(kind,record_id):
     return redirect(url_for('admin.content_index'))
 
 
-@admin_bp.route('/content/<kind>/<int:record_id>/upload-image', methods=['POST'])
+@admin_bp.post('/content/<kind>/<int:record_id>/upload-image')
 @login_required
 @admin_required
 def content_upload_image(kind, record_id):
-    """Handle image upload for a content item."""
+    """Replace existing cover safely; do not delete old file before DB commit."""
     if kind not in ('module', 'quiz', 'recipe'):
         abort(404)
-    
-    if kind not in KINDS:
-        abort(404)
-    
-    model = KINDS[kind]
-    row = db.session.get(model, record_id)
+    row = db.session.get(KINDS[kind], record_id)
     if row is None:
         abort(404)
-    
-    # Check if file was uploaded
-    if 'image' not in request.files:
-        flash('Tidak ada file yang dipilih.', 'danger')
-        return redirect(request.referrer or url_for('admin.content_index'))
-    
-    file = request.files['image']
-    if file.filename == '':
-        flash('Tidak ada file yang dipilih.', 'danger')
-        return redirect(request.referrer or url_for('admin.content_index'))
-    
-    # Get existing image path for replacement
-    existing_image = getattr(row, 'image_path', None)
-    
-    # Process and save the image
-    from app.utils.image_upload import process_and_save_image
-    success, result, original_name = process_and_save_image(file, kind, existing_image)
-    
-    if success:
-        row.image_path = result
+    file = request.files.get('image')
+    if file is None or not file.filename:
+        flash('Pilih gambar terlebih dahulu.', 'danger')
+        return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))
+
+    from app.utils.image_upload import process_and_save_image, delete_image_file
+    success, new_path, _ = process_and_save_image(file, kind)
+    if not success:
+        flash(f'Gagal mengunggah gambar: {new_path}', 'danger')
+        return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))
+    old_path = row.image_path
+    try:
+        row.image_path = new_path
         db.session.commit()
-        flash('Gambar berhasil diunggah.', 'success')
-    else:
-        flash(f'Gagal mengunggah gambar: {result}', 'danger')
-    
-    return redirect(request.referrer or url_for('admin.content_index'))
+    except Exception:
+        db.session.rollback()
+        delete_image_file(new_path)
+        flash('Gagal menyimpan gambar ke database.', 'danger')
+        return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))
+    if old_path and old_path != new_path:
+        delete_image_file(old_path)
+    flash('Gambar berhasil diunggah.', 'success')
+    return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))
 
 
-@admin_bp.route('/content/<kind>/<int:record_id>/remove-image', methods=['POST'])
+@admin_bp.post('/content/<kind>/<int:record_id>/remove-image')
 @login_required
 @admin_required
 def content_remove_image(kind, record_id):
-    """Remove the image from a content item."""
+    """Clear database reference before deleting the old physical file."""
     if kind not in ('module', 'quiz', 'recipe'):
         abort(404)
-    
-    if kind not in KINDS:
-        abort(404)
-    
-    model = KINDS[kind]
-    row = db.session.get(model, record_id)
+    row = db.session.get(KINDS[kind], record_id)
     if row is None:
         abort(404)
-    
-    # Get and delete the existing image file
-    existing_image = getattr(row, 'image_path', None)
-    if existing_image:
-        from app.utils.image_upload import delete_image_file
-        delete_image_file(existing_image)
-        
-        # Clear the image path in database
+    old_path = row.image_path
+    if not old_path:
+        flash('Tidak ada gambar untuk dihapus.', 'info')
+        return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))
+    try:
         row.image_path = None
         db.session.commit()
-        flash('Gambar berhasil dihapus.', 'success')
-    else:
-        flash('Tidak ada gambar untuk dihapus.', 'info')
-    
-    return redirect(request.referrer or url_for('admin.content_index'))
+    except Exception:
+        db.session.rollback()
+        flash('Gagal menghapus referensi gambar.', 'danger')
+        return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))
+    from app.utils.image_upload import delete_image_file
+    delete_image_file(old_path)
+    flash('Gambar berhasil dihapus.', 'success')
+    return redirect(url_for('admin.content_edit', kind=kind, record_id=record_id))

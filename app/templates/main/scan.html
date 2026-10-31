@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Scan Makanan{% endblock %}
+{% block content %}
+<section class="c-wrap cig-scan">
+  <header class="c-head">
+    <span class="c-tag">AI Food Segmentation • YOLOv8s-seg</span>
+    <h1>Scan Makanan</h1>
+    <p>Unggah atau foto piring makanan. CIG akan menandai <strong>area visual yang terdeteksi</strong> sebagai karbohidrat, protein, sayur, dan buah.</p>
+  </header>
+
+  <div class="c-card cig-scan-upload">
+    <h2>Foto piring makananmu</h2>
+    <p class="c-muted">JPG, PNG, atau WebP • maksimal 5 MB. Ambil gambar yang terang dengan seluruh piring terlihat.</p>
+    <form method="POST" action="{{ url_for('main.scan_makanan') }}" enctype="multipart/form-data" id="food-scan-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="cig-scan-photo-picker">
+        <label for="food-image" class="cig-scan-label">Pilih foto atau gunakan kamera ponsel</label>
+        <input type="file" id="food-image" name="food_image" accept="image/jpeg,image/png,image/webp" capture="environment" required>
+        <img id="cig-photo-preview" alt="Pratinjau foto yang dipilih" hidden>
+      </div>
+      <div class="c-actions">
+        <button class="c-pill" type="submit" id="food-scan-submit">Analisis Foto</button>
+        <button class="c-pill c-outline" type="button" id="camera-open">Buka Kamera Browser</button>
+      </div>
+      <div id="camera-controls" class="cig-camera" hidden>
+        <video id="camera-video" autoplay playsinline muted aria-label="Pratinjau kamera"></video>
+        <div class="c-actions">
+          <button class="c-pill" type="button" id="camera-capture">Ambil Foto</button>
+          <button class="c-pill c-outline" type="button" id="camera-close">Tutup Kamera</button>
+        </div>
+      </div>
+      <p id="camera-message" class="c-muted" role="status"></p>
+    </form>
+    {% if current_user.is_authenticated %}
+      <p class="cig-scan-note">Kamu sudah login. Hasil scan berhasil akan otomatis tersimpan di Meal Tracker.
+        <a href="{{ url_for('user.meal_tracker') }}">Lihat riwayat</a>
+      </p>
+    {% else %}
+      <p class="cig-scan-note">Mode tamu: foto dan hasil scan tidak disimpan secara permanen.
+        <a href="{{ url_for('auth.login', next=url_for('main.scan_makanan')) }}">Masuk untuk menyimpan riwayat</a>
+      </p>
+    {% endif %}
+  </div>
+
+  {% if scan %}
+  <section class="cig-scan-results" aria-labelledby="scan-result-title">
+    <div class="c-card">
+      <h2 id="scan-result-title">Hasil Segmentasi Makanan</h2>
+      <p class="c-muted">Area berwarna merupakan bagian gambar yang dikenali oleh model, bukan pengukuran kandungan gizi.</p>
+      <div class="cig-scan-images">
+        <figure><img src="{{ scan.original_url }}" alt="Foto makanan asli yang diunggah"><figcaption>Foto asli</figcaption></figure>
+        <figure><img src="{{ scan.overlay_url }}" alt="Foto makanan dengan overlay warna kelas YOLO"><figcaption>Hasil segmentasi YOLO</figcaption></figure>
+      </div>
+      {% if scan.pixels == 0 %}
+        <div class="c-feedback">Model belum mendeteksi salah satu dari empat kategori dalam foto ini. Coba ulang dengan pencahayaan dan sudut yang berbeda.</div>
+      {% else %}
+        <h3 class="c-subtitle">Proporsi Luas Area yang Terdeteksi</h3>
+        <div class="cig-scan-stats">
+          {% for key in categories %}
+          <div class="cig-scan-stat">
+            <div class="cig-scan-stat-title"><span class="cig-scan-dot" style="background:{{ colors[key] }}"></span>{{ labels[key] }}<strong>{{ '%.1f'|format(scan.percentages[key]) }}%</strong></div>
+            <div class="c-progress"><div style="width:{{ scan.percentages[key] }}%;background:{{ colors[key] }}"></div></div>
+          </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if scan.saved %}
+        <p class="cig-scan-note">Hasil disimpan di akunmu. <a href="{{ url_for('user.meal_tracker') }}">Lihat Meal Tracker</a></p>
+      {% endif %}
+    </div>
+    <div class="c-card">
+      <h2>Interpretasi Hasil & Isi Piringku</h2>
+      <p>Persentase di atas dihitung menggunakan <strong>jumlah piksel hasil segmentasi pada area yang terdeteksi model</strong>. Setiap piksel yang tumpang tindih dihitung sekali berdasarkan deteksi dengan confidence tertinggi.</p>
+      <p><strong>Batasan:</strong> angka tersebut bukan persentase berat makanan, volume, kalori, karbohidrat gram, protein gram, ataupun penilaian kecukupan gizi. Hasil juga dipengaruhi sudut kamera, makanan tertutup, kondisi cahaya, dan kesalahan model.</p>
+      <p>Pedoman <strong>Isi Piringku</strong> dapat digunakan untuk belajar tentang komposisi kelompok pangan, tetapi foto tunggal tidak cukup untuk menentukan apakah konsumsi seseorang sudah sesuai anjuran.</p>
+      <p class="c-muted">Hasil ini hanya untuk edukasi, bukan diagnosis atau pengganti konsultasi tenaga kesehatan.</p>
+    </div>
+    {% if suggested_modules %}
+    <div class="c-card">
+      <h2>Pelajari juga modul terkait</h2>
+      <div class="cig-scan-related">
+        {% for module in suggested_modules %}
+          <a href="{{ url_for('content.module_detail', slug=module.slug) }}">{{ module.title }} &rarr;</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </section>
+  {% else %}
+  <div class="c-card cig-scan-explain">
+    <h2>Apa yang ditampilkan oleh scanner?</h2>
+    <p>Hasil berupa foto dengan penanda warna empat kelompok pangan, disertai persentase <strong>luas piksel terdeteksi</strong> untuk setiap kelompok. Tidak ada estimasi gram atau kalori dari foto.</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+(function() {
+  const input = document.getElementById('food-image');
+  const preview = document.getElementById('cig-photo-preview');
+  const open = document.getElementById('camera-open');
+  const close = document.getElementById('camera-close');
+  const snap = document.getElementById('camera-capture');
+  const box = document.getElementById('camera-controls');
+  const video = document.getElementById('camera-video');
+  const message = document.getElementById('camera-message');
+  const form = document.getElementById('food-scan-form');
+  const submit = document.getElementById('food-scan-submit');
+  let stream = null;
+  let previewUrl = null;
+  function stop() {
+    if(stream){stream.getTracks().forEach(t => t.stop());stream=null;}
+    video.srcObject = null;box.hidden=true;
+  }
+  function updatePreview(){
+    if(previewUrl) URL.revokeObjectURL(previewUrl);
+    if(input.files && input.files[0]) { previewUrl=URL.createObjectURL(input.files[0]);preview.src=previewUrl;preview.hidden=false; }
+    else {preview.hidden=true;}
+  }
+  input.addEventListener('change', updatePreview);
+  open.addEventListener('click', async function(){
+    message.textContent='';
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){message.textContent='Browser tidak mendukung kamera. Gunakan tombol pilih foto.';return;}
+    try { stop(); stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});video.srcObject=stream;box.hidden=false;await video.play(); }
+    catch(e){message.textContent='Kamera tidak dapat dibuka. Berikan izin kamera atau pilih foto dari galeri.';stop();}
+  });
+  snap.addEventListener('click', function(){
+    if(!stream || !video.videoWidth){return;}
+    const canvas=document.createElement('canvas');
+    canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+    canvas.getContext('2d').drawImage(video,0,0);
+    canvas.toBlob(function(blob){
+      if(!blob){message.textContent='Gagal mengambil foto kamera.';return;}
+      const file=new File([blob],'kamera-cig.jpg',{type:'image/jpeg'});
+      const transfer=new DataTransfer();transfer.items.add(file);input.files=transfer.files;
+      updatePreview();message.textContent='Foto berhasil diambil. Klik Analisis Foto.';stop();
+    },'image/jpeg',0.85);
+  });
+  close.addEventListener('click',stop);
+  form.addEventListener('submit',function(){submit.disabled=true;submit.textContent='Menganalisis foto...';stop();});
+  window.addEventListener('pagehide',stop);
+})();
+</script>
+{% endblock %}

@@ -1,6 +1,7 @@
 """CIG Application Configuration."""
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,6 +16,8 @@ class Config:
         _raw_db_url = _raw_db_url.replace('postgresql://', 'postgresql+psycopg2://', 1)
     SQLALCHEMY_DATABASE_URI = _raw_db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Limit the entire multipart request; each image is checked at 5 MB separately.
+    MAX_CONTENT_LENGTH = 6 * 1024 * 1024
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,
         'pool_recycle': 300,
@@ -50,6 +53,14 @@ class Config:
     # Application
     APP_NAME = 'Cakrawala Informasi Gizi'
     APP_SHORT_NAME = 'CIG'
+
+    # Scanner: use checkpoint stored outside SQLAlchemy app/models.
+    SCAN_MODEL_PATH = os.environ.get(
+        'SCAN_MODEL_PATH', str(Path(__file__).resolve().parent.parent / 'models' / 'yolo' / 'best.pt')
+    )
+    SCAN_CLASS_MAP = os.environ.get('SCAN_CLASS_MAP', '')
+    SCAN_DEVICE = os.environ.get('SCAN_DEVICE', 'cpu')
+    SCAN_IMGSZ = int(os.environ.get('SCAN_IMGSZ', '640'))
 
 
 class DevelopmentConfig(Config):

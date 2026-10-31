@@ -21,10 +21,14 @@ def is_safe_url(target):
         return False
     ref_url = urlparse(request.host_url)
     test_url = urlparse(target)
-    return (
-        test_url.scheme in ('', 'http', 'https')
-        and ref_url.netloc == test_url.netloc
-    )
+    # Relative paths are normal in Flask-Login's `next` parameter.
+    # Reject protocol-relative URLs, backslashes and control characters.
+    if any(ord(char) < 32 for char in target) or '\\' in target or target.startswith('//'):
+        return False
+    if test_url.scheme or test_url.netloc:
+        return (test_url.scheme in ('http', 'https')
+                and test_url.netloc == ref_url.netloc)
+    return target.startswith('/') and not target.startswith('//')
 
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -59,6 +63,9 @@ def register():
 def login():
     """User login."""
     if current_user.is_authenticated:
+        next_page = request.args.get('next')
+        if next_page and is_safe_url(next_page):
+            return redirect(next_page)
         if current_user.is_admin:
             return redirect(url_for('admin.dashboard'))
         return redirect(url_for('user.dashboard'))

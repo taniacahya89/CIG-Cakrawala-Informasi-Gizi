@@ -67,5 +67,9 @@ runs/
 
 # File rahasia lainnya
 *.pem
-*.keyreferences/
+*.key
 references/
+
+# Private scan images and model weights (never push to GitHub)
+instance/
+models/yolo/*.pt

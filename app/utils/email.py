@@ -1,10 +1,11 @@
 """Email utility for CIG.
 
-In development mode, emails are printed to the console.
-For testing with a real SMTP server, use MailHog (localhost:1025).
+Email tokens are never printed to the console.
+For local SMTP testing, a tool such as MailHog can be configured separately.
 """
 
-from flask import current_app, render_template_string
+from html import escape
+from flask import current_app
 from flask_mail import Message
 from app.extensions import mail
 
@@ -12,8 +13,7 @@ from app.extensions import mail
 def send_email(to, subject, body_text, body_html=None):
     """Send an email message.
 
-    In development, if the mail server is not available,
-    the email content is logged to the console.
+    If delivery fails, log only a generic warning (never access tokens).
     """
     msg = Message(
         subject=subject,
@@ -28,11 +28,6 @@ def send_email(to, subject, body_text, body_html=None):
     except Exception as e:
         # In development, log the email instead of failing
         current_app.logger.warning(f'Email delivery failed: {e}')
-        current_app.logger.info(f'--- EMAIL ---')
-        current_app.logger.info(f'To: {to}')
-        current_app.logger.info(f'Subject: {subject}')
-        current_app.logger.info(f'Body: {body_text}')
-        current_app.logger.info(f'--- END EMAIL ---')
         return False
 
 
@@ -56,13 +51,15 @@ Salam,
 Tim Cakrawala Informasi Gizi
 """
 
+    safe_name = escape(user.full_name)
+    safe_reset_url = escape(reset_url, quote=True)
     body_html = f"""
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #C62828;">Atur Ulang Kata Sandi</h2>
-        <p>Halo <strong>{user.full_name}</strong>,</p>
+        <p>Halo <strong>{safe_name}</strong>,</p>
         <p>Kami menerima permintaan untuk mengatur ulang kata sandi akun CIG Anda.</p>
         <p>
-            <a href="{reset_url}"
+            <a href="{safe_reset_url}"
                style="display: inline-block; padding: 12px 24px; background-color: #C62828;
                       color: white; text-decoration: none; border-radius: 9999px;">
                 Atur Ulang Kata Sandi
@@ -98,14 +95,16 @@ Salam,
 Tim Cakrawala Informasi Gizi
 """
 
+    safe_inviter_name = escape(invited_by.full_name)
+    safe_invite_url = escape(invite_url, quote=True)
     body_html = f"""
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #1B5E20;">Undangan Administrator CIG</h2>
         <p>Halo,</p>
-        <p>Anda diundang oleh <strong>{invited_by.full_name}</strong> untuk menjadi administrator
+        <p>Anda diundang oleh <strong>{safe_inviter_name}</strong> untuk menjadi administrator
            <strong>Cakrawala Informasi Gizi (CIG)</strong>.</p>
         <p>
-            <a href="{invite_url}"
+            <a href="{safe_invite_url}"
                style="display: inline-block; padding: 12px 24px; background-color: #1B5E20;
                       color: white; text-decoration: none; border-radius: 9999px;">
                 Terima Undangan
