@@ -2,6 +2,7 @@
 
 Use service tests separately for actual mask-area arithmetic.
 """
+from sqlalchemy import inspect 
 from io import BytesIO
 from PIL import Image
 from app.extensions import db
@@ -65,8 +66,9 @@ def test_bad_upload_returns_message(client):
 def test_other_user_cannot_access_scan(client, app, standard_user, monkeypatch, tmp_path):
     app.instance_path = str(tmp_path)
     _stub_inference(monkeypatch)
+    owner_id = inspect(standard_user).identity[0]
     with app.app_context():
-        db.session.add(ScanHistory(user_id=standard_user.id,
+        db.session.add(ScanHistory(user_id=owner_id,
             image_path='user_1/none_original.webp', overlay_path='user_1/none_overlay.webp',
             area_percentages={'buah':100.0}))
         db.session.commit()

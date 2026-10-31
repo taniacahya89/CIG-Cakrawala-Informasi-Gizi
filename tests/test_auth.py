@@ -191,10 +191,13 @@ def test_password_change_with_verification(client, app, standard_user):
     assert 'Kata sandi berhasil diubah' in success_res.get_data(as_text=True)
 
 
-def test_placeholder_pages(client):
-    """Scanner remains a placeholder until the real YOLO model is integrated."""
-    res = client.get('/scan-makanan')
-    assert res.status_code == 200
-    assert 'Scan Makanan' in res.get_data(as_text=True)
-    assert 'Tahap Pengembangan Berikutnya' in res.get_data(as_text=True)
+def test_scanner_page(client):
+    """Pastikan halaman AI Scanner menampilkan formulir upload."""
+    response = client.get('/scan-makanan')
+    html = response.get_data(as_text=True)
+
+    assert response.status_code == 200
+    assert 'Scan Makanan' in html
+    assert 'name="food_image"' in html
+    assert 'Tahap Pengembangan Berikutnya' not in html
 

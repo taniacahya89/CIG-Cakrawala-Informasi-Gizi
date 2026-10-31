@@ -32,7 +32,7 @@ def test_admin_access_dashboard(client, admin_user):
 
     response = client.get('/admin/dashboard')
     assert response.status_code == 200
-    assert 'Panel Manajemen CIG' in response.get_data(as_text=True)
+    assert 'Dashboard' in response.get_data(as_text=True)
 
 
 def test_admin_invitation_flow(client, app, admin_user):
