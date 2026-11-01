@@ -43,6 +43,33 @@ jobs:
           test -s "$BACKUP_DIR/content_uploads.tar.gz"
           (cd "$BACKUP_DIR" && sha256sum --check SHA256SUMS)
           echo "BACKUP TEST: BERHASIL"
+      
+      
+      - name: Test database restore
+        run: |
+          BACKUP_DIR="$(find "$RUNNER_TEMP/cig-backups" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+          test -n "$BACKUP_DIR"
+
+          docker compose exec -T db createdb -U cig cig_restore_test
+
+          docker compose exec -T db pg_restore \
+            -U cig \
+            -d cig_restore_test \
+            --no-owner \
+            --no-privileges \
+            --exit-on-error \
+            < "$BACKUP_DIR/database.dump"
+
+          COUNTS="$(docker compose exec -T db psql \
+            -U cig -d cig_restore_test -tAc \
+            "SELECT
+               (SELECT COUNT(*) FROM learning_modules)::text || ',' ||
+               (SELECT COUNT(*) FROM quiz_categories)::text || ',' ||
+               (SELECT COUNT(*) FROM quiz_questions)::text || ',' ||
+               (SELECT COUNT(*) FROM recipes)::text;")"
+
+          test "$COUNTS" = "9,3,30,19"
+          echo "RESTORE DATABASE BERHASIL: $COUNTS"
 
       - name: Show logs on failure
         if: failure()
