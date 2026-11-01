@@ -1,0 +1,48 @@
+﻿name: CIG Compose Smoke Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compose-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout CIG
+        uses: actions/checkout@v4
+
+      - name: Create temporary test credentials
+        run: |
+          printf 'POSTGRES_PASSWORD=%s\nSECRET_KEY=%s\n' "$(openssl rand -hex 24)" "$(openssl rand -hex 32)" > .env
+          chmod 600 .env
+          mkdir -p models/yolo
+
+      - name: Validate Docker Compose
+        run: docker compose config --quiet
+
+      - name: Build application
+        run: docker compose build web
+
+      - name: Start PostgreSQL
+        run: docker compose up -d db
+
+      - name: Run database migrations
+        run: docker compose run --rm web python -m flask --app run:app db upgrade
+
+      - name: Seed CIG content
+        run: docker compose run --rm web python -m scripts.seed_content --publish
+
+      - name: Start Flask and test scanner page
+        run: |
+          docker compose up -d web
+          curl --retry 15 --retry-delay 3 --retry-all-errors --max-time 15 -fsS http://127.0.0.1:8080/scan-makanan -o /tmp/scan.html
+          grep -q 'name="food_image"' /tmp/scan.html
+
+      - name: Show logs if test fails
+        if: failure()
+        run: docker compose logs --no-color --tail 120
+
+      - name: Clean up
+        if: always()
+        run: docker compose down -v
