@@ -66,7 +66,7 @@ class QuizBestScore(db.Model):
 class Recipe(db.Model):
     __tablename__ = 'recipes'
     id = db.Column(db.Integer, primary_key=True)
-    slug = db.Column(db.String(180), unique=True, nullable=False, index=True)
+    slug = db.Column(db.String(180), unique=True, nullable=False)
     title = db.Column(db.String(250), nullable=False)
     category = db.Column(db.String(120), nullable=False)
     ingredients = db.Column(db.Text, nullable=False, default='')
