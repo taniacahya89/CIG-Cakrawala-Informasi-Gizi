@@ -1,0 +1,55 @@
+
+name: CIG Backup Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backup-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout CIG
+        uses: actions/checkout@v4
+
+      - name: Prepare temporary credentials
+        run: |
+          printf 'POSTGRES_PASSWORD=%s\nSECRET_KEY=%s\n' \
+            "$(openssl rand -hex 24)" \
+            "$(openssl rand -hex 32)" > .env
+          chmod 600 .env
+          mkdir -p models/yolo
+
+      - name: Start CIG and PostgreSQL
+        run: docker compose up -d --build
+
+      - name: Prepare database and content
+        run: |
+          docker compose exec -T web python -m flask --app run:app db upgrade
+          docker compose exec -T web python -m scripts.seed_content --publish
+
+      - name: Execute backup script
+        run: |
+          CIG_BACKUP_DIR="$RUNNER_TEMP/cig-backups" \
+            bash scripts/backup_vps.sh
+
+      - name: Verify backup integrity
+        run: |
+          BACKUP_DIR="$(find "$RUNNER_TEMP/cig-backups" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+          test -n "$BACKUP_DIR"
+          test -s "$BACKUP_DIR/database.dump"
+          test -s "$BACKUP_DIR/scan_files.tar.gz"
+          test -s "$BACKUP_DIR/content_uploads.tar.gz"
+          (cd "$BACKUP_DIR" && sha256sum --check SHA256SUMS)
+          echo "BACKUP TEST: BERHASIL"
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs --no-color --tail 100
+
+      - name: Clean up
+        if: always()
+        run: |
+          docker compose down -v
+          rm -f .env
